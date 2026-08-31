@@ -414,6 +414,12 @@ Cadence Encounter
      │
      ▼
 GDSII
+## Reference
+
+- Govardhan N., **RISC-V Single Cycle Processor**:  
+  https://github.com/govardhnn/RISCV_Single_Cycle_Processor
+
+> The RTL implementation was referenced and adapted from the above project. The RTL-to-GDSII physical design flow was independently implemented using Cadence Encounter.
 ```
 Author: Lý Vĩnh Khang
 Electronics and Telecommunications Engineering
