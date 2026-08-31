@@ -1,90 +1,32 @@
-# RISC-V-Single-Cycle-Processor-Physical-Design
+# RISC-V 32-bit Single-Cycle Processor
+### RTL Design and RTL-to-GDSII Physical Implementation using Cadence Encounter
 
-My implementation of a **32-bit RISC-V Single Cycle Processor**, followed by an **ASIC Physical Design flow using Cadence Encounter**.
-
-The project covers both the RTL implementation of the processor and the physical implementation from synthesized netlist to final GDSII.
-
----
-
-## Reference
-
-
-Reference Textbook:
-
-`Digital Design and Computer Architecture: RISC-V Edition`
-by Sarah L. Harris and David Harris
+A 32-bit RISC-V Single-Cycle Processor implemented at RTL level and taken through the digital physical design flow from synthesized netlist to GDSII using Cadence Encounter.
 
 ---
 
-## Single Cycle Processor
+## 📌 Project Overview
 
-The processor is based on a single-cycle architecture, where each instruction is completed within a single clock cycle.
+This project focuses on the design and physical implementation of a **32-bit RISC-V Single-Cycle Processor**.
 
-### Processor Design Specification
+The project is divided into two main stages:
 
-![Single Cycle Processor](https://user-images.githubusercontent.com/37037342/232227351-18115bc2-6f23-4f39-a2f4-f87c626f9750.png)
+- **RTL Design** – implementation of the RISC-V processor using Verilog HDL.
+- **Physical Design** – implementation of the synthesized design using **Cadence Encounter RTL-to-GDSII**.
 
----
-
-## Instructions Implemented
-
-| Type | Instructions | Implemented |
-|------|--------------|-------------|
-| R | ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND | ADD, SUB, SLT, SLTU, XOR, SRL, SRA, OR, AND |
-| I | JALR, LB, LH, LW, LBU, LHU, ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI | LB, LH, LW, LBU, LHU, ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI |
-| S | SB, SH, SW | SB, SH, SW |
-| B | BEQ, BNE, BLT, BGE, BLTU, BGEU | BEQ |
-| U | LUI, AUIPC | LUI, AUIPC |
-| J | JAL | - |
-
-### Current Status
-
-**25 instructions are currently implemented.**
-
-The following instructions are not implemented yet:
+The physical design flow includes:
 
 ```text
-JALR
-BNE
-BLT
-BGE
-BLTU
-BGEU
-JAL
-RTL Design
-The processor is implemented using Verilog HDL.
-
-The main RTL modules include:
-ALU
-Register File
-Control Unit
-Instruction Memory
-Data Memory
-Program Counter
-Immediate Extension
-Multiplexers
-Core Datapath
-ASIC Physical Design
-
-After RTL development and synthesis, the design is taken through an ASIC physical design flow using Cadence Encounter.
-The physical design flow consists of:
-
 RTL
  │
  ▼
-Logic Synthesis
+Synthesis
  │
  ▼
 Gate-Level Netlist
  │
  ▼
-Design Import
- │
- ▼
 Floorplan
- │
- ▼
-I/O Placement
  │
  ▼
 Power Planning
@@ -93,7 +35,7 @@ Power Planning
 Placement
  │
  ▼
-Clock Tree Synthesis
+Clock Tree Synthesis (CTS)
  │
  ▼
 Routing
@@ -106,176 +48,316 @@ Physical Verification
  │
  ▼
 GDSII
-Physical Design Tool
-Cadence Encounter 13.10
 
-The following stages are performed in Encounter:
-Design Import
-Floorplanning
-I/O Pin Placement
-Power Planning
-Standard Cell Placement
-Clock Tree Synthesis (CTS)
-Routing
-Post-Route Optimization
-Physical Verification
-Timing Analysis
-GDSII Generation
+The main objective is to understand the complete digital IC implementation flow from RTL to a physical layout.
 
-1. Floorplanning
-The synthesized netlist is imported into Cadence Encounter and the initial floorplan is created.
-The floorplanning stage includes:
-Die/core definition
+🧠 Processor Architecture
+
+The processor follows the Single-Cycle RISC-V architecture, where each instruction is executed within a single clock cycle.
+
+The main functional blocks include:
+
+Program Counter (PC)
+Instruction Memory
+Register File
+ALU
+Control Unit
+Immediate Generator
+Data Memory
+Multiplexers
+Branch / Jump Address Generation
+Result Selection Logic
+
+A simplified datapath can be represented as:
+
+                  ┌──────────────────┐
+                  │  Program Counter │
+                  └────────┬─────────┘
+                           │
+                           ▼
+                  ┌──────────────────┐
+                  │ Instruction Mem. │
+                  └────────┬─────────┘
+                           │
+                           ▼
+        ┌─────────────────────────────────────┐
+        │            Control Unit             │
+        └─────────────────────────────────────┘
+                           │
+                           ▼
+                  ┌──────────────────┐
+                  │  Register File   │
+                  └────────┬─────────┘
+                           │
+                 ┌─────────┴─────────┐
+                 ▼                   ▼
+          ┌──────────────┐    ┌──────────────┐
+          │ Immediate    │    │     ALU      │
+          │ Generator    │    │              │
+          └──────────────┘    └──────┬───────┘
+                                     │
+                              ┌──────▼───────┐
+                              │ Data Memory  │
+                              └──────┬───────┘
+                                     │
+                                     ▼
+                              ┌──────────────┐
+                              │ Result Mux   │
+                              └──────┬───────┘
+                                     │
+                                     ▼
+                              Register File
+📚 RISC-V Instruction Set
+
+The processor is based on the RV32I instruction set architecture.
+
+The following instruction groups are considered in the design:
+
+Type	Instructions
+R-Type	ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+I-Type	JALR, LB, LH, LW, LBU, LHU, ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
+S-Type	SB, SH, SW
+B-Type	BEQ, BNE, BLT, BGE, BLTU, BGEU
+U-Type	LUI, AUIPC
+J-Type	JAL
+Implemented Instructions
+
+The RTL implementation currently supports:
+
+Type	Instructions
+R	ADD, SUB, SLT, SLTU, XOR, SRL, SRA, OR, AND
+I	LB, LH, LW, LBU, LHU, ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
+S	SB, SH, SW
+B	BEQ
+U	LUI, AUIPC
+J	-
+
+The instruction set can be extended in future versions to support the remaining branch and jump instructions.
+
+🔧 RTL Design
+
+The processor was described using Verilog HDL.
+
+The RTL design is organized into multiple reusable modules.
+
+Main RTL Modules
+Module	Description
+Single_Cycle_Top.v	Top-level processor module
+Single_Cycle_Core.v	Main processor core
+Core_Datapath.v	Processor datapath
+Control_Unit.v	Main control logic
+Main_Decoder.v	Instruction decoding
+ALU.v	Arithmetic and logic operations
+ALU_decoder.v	ALU operation decoding
+Register_File.v	32-register register file
+Instruction_Memory.v	Instruction memory
+Data_Memory.v	Data memory
+PC.v	Program Counter
+PC_Plus_4.v	PC + 4 calculation
+PC_Target.v	Branch target calculation
+PC_Mux.v	PC source selection
+ALU_Mux.v	ALU operand selection
+Result_Mux.v	Write-back result selection
+Extend.v	Immediate value extension
+🧪 Simulation and Verification
+
+Before physical implementation, the RTL design should be verified through simulation.
+
+Testbenches are provided for individual modules as well as the complete processor.
+
+Example verification structure:
+
+RTL
+ │
+ ├── ALU
+ │     └── ALU_tb
+ │
+ ├── Register File
+ │     └── Register_File_tb
+ │
+ ├── Control Unit
+ │     └── Control_Unit_tb
+ │
+ ├── Data Memory
+ │     └── Data_Memory_tb
+ │
+ └── Single Cycle Core
+       └── Single_Cycle_Core_tb
+
+The testbench environment is used to verify:
+
+ALU operations
+Register read/write operations
+Immediate generation
+Instruction decoding
+Memory read/write
+PC operation
+Branch behavior
+Processor datapath
+Overall processor operation
+🏗️ Physical Design
+
+After RTL verification and synthesis, the gate-level netlist is used for physical implementation.
+
+The physical design was performed using:
+
+Cadence Encounter RTL-to-GDSII System
+
+The implementation flow consists of:
+
+1. Design Import
+
+The synthesized gate-level netlist, timing constraints and technology libraries are imported into Encounter.
+
+Main inputs include:
+
+Gate-level netlist
+Technology LEF
+Standard-cell LEF
+Timing libraries
+SDC constraints
+2. Floorplan
+
+The initial floorplan defines:
+
+Core area
+Die area
 Core utilization
 Aspect ratio
-Placement boundaries
-Macro placement
-Routing considerations
-The floorplan provides the physical area in which the processor cells are placed.
+Standard-cell placement area
+I/O pin region
 
-2. I/O Pin Placement
-The processor input and output ports are placed around the core boundary.
-Different metal layers can be assigned to different groups of ports according to the routing requirements.
-Example ports include:
-
-clk_i
-rst_i
-rst_cpu_i
-
-axi_i_*
-axi_t_*
-
-intr_i[*]
-
-The I/O pins are fixed after placement to prevent unintended movement during later physical-design stages.
+The floorplan provides the physical boundary in which the processor is implemented.
 
 3. Power Planning
-A Power Distribution Network (PDN) is created to distribute the power and ground nets throughout the processor.
-The power network consists of:
-Power Ring
-     │
-     ▼
-Power Straps
-     │
-     ▼
-Standard Cell Power Rails
 
-Multiple metal layers are used for power distribution.
-Power Mesh
-The power mesh uses the following metal layers:
-Mesh	Horizontal Layer	Vertical Layer
-MESH1	M9	M8
-MESH2	M7	M6
-MESH3	M5	M4
-MESH4	M3	M2
-Standard Cell Rail	M1	-
-The higher metal layers are used for the global power network, while M1 provides power connections to standard cells.
+Power distribution networks are created to provide stable power and ground connections to the standard cells.
 
-4. Standard Cell Placement
-After power planning, standard cells are placed inside the core area.
-The placement stage aims to achieve:
-Legal cell placement
-Low routing congestion
-Good timing
-Efficient area utilization
-Reduced interconnect length
-Placement is verified before proceeding to CTS.
+The power planning stage includes:
+
+Power rings
+Power straps
+Standard-cell power rails
+VDD connection
+VSS connection
+Via connections between power layers
+
+A multi-layer power mesh is used to distribute the power supply across the core.
+
+4. Placement
+
+The synthesized standard cells are placed inside the core area.
+
+The placement stage considers:
+
+Cell legality
+Timing
+Congestion
+Cell density
+Routing resources
+
+After placement, the design is checked to make sure that cells are properly placed inside the core.
 
 5. Clock Tree Synthesis
-Clock Tree Synthesis (CTS) is performed to distribute the clock signal to sequential elements.
-The main objectives are:
-Reduce clock skew
-Control clock latency
-Improve clock transition
-Satisfy setup timing
-Satisfy hold timing
-The clock network is built before final signal routing.
 
+Clock Tree Synthesis (CTS) is performed to distribute the clock signal throughout the design.
+
+The CTS stage aims to control:
+
+Clock skew
+Clock latency
+Clock transition
+Clock routing
+Clock buffer/inverter insertion
 6. Routing
-After placement and CTS, signal routing is performed.
-The routing stage connects the standard cells, macros, clock network, and I/O pins.
-Typical Encounter commands include:
-routeDesign
-and post-route ECO routing:
-ecoRoute
+
+The routing stage connects all placed cells according to the synthesized netlist.
+
+Routing is performed in multiple metal layers.
+
+The main objectives are:
+
+Complete all signal connections
+Complete power connections
+Avoid routing violations
+Reduce congestion
+Meet design rules
 7. Post-Route Optimization
-Post-route optimization is performed after routing to improve the final timing and resolve remaining violations.
-Typical optimization targets include:
-Setup violations
-Hold violations
-Transition violations
-Capacitance violations
-Routing-related violations
-Example:
-optDesign -postRoute
 
-8. Physical Verification
-Several physical verification checks are performed after routing.
-Connectivity:
-verifyConnectivity -type all
-Checks the physical connectivity of the design.
+After routing, timing optimization is performed to improve the final design.
 
-Geometry:
-verifyGeometry -report ./reports/final_drc.rpt
-Checks physical geometry violations.
+The design is checked for:
 
-DRC:
-verify_drc
-Checks design-rule violations.
+Setup timing
+Hold timing
+Clock timing
+Signal integrity
+Routing violations
+🖥️ Physical Design Result
 
-Antenna:
-verifyProcessAntenna
-Checks process antenna violations.
+The following image shows the final physical layout of the RISC-V Single-Cycle Processor implemented using Cadence Encounter.
 
-9. Timing Analysis
-Post-route timing analysis is performed to evaluate the timing performance of the processor.
+Layout Highlights
+
+The final layout contains:
+
+Standard-cell logic
+Instruction/Data memory regions
+Power distribution network
+Clock network
+Signal routing
+I/O pins
+Core boundary
+
+The layout demonstrates the transformation from a synthesized digital design into a physical IC implementation.
+
+🔍 Physical Verification
+
+Several checks are performed after placement and routing.
+
+Connectivity Check
+
+Verifies that all required electrical connections are present.
+
+verifyConnectivity
+Geometry / DRC Check
+
+Checks physical design-rule violations.
+
+verifyGeometry
+Timing Analysis
+
+Post-route timing is analyzed to verify setup and hold constraints.
+
 timeDesign -postRoute
-The main timing parameters include:
-Setup Slack
-Hold Slack
-Worst Negative Slack (WNS)
-Total Negative Slack (TNS)
-Clock Skew
-Data Arrival Time
-Required Arrival Time
-Both setup and hold timing are checked before final sign-off.
+Antenna Check
 
-10. Final Design Verification
-Before generating the final layout, the following checks are performed:
-Placement
-   │
-   ├── Legal Placement
-   │
-   ▼
-Connectivity
-   │
-   ▼
-DRC
-   │
-   ▼
-Antenna
-   │
-   ▼
-Timing
-   │
-   ▼
-Final Database
-The design is considered ready for final output after the physical and timing checks are completed successfully.
+Checks for potential antenna violations caused by metal routing.
 
-11. GDSII Generation
-The final Encounter database is saved and the physical layout is exported to GDSII.
-Example:
-saveDesign ./final_encounter.enc
-streamOut ./top_module.gds
-Final outputs include:
-final_encounter.enc
-top_module.gds
-Directory Structure
-├── instructions.txt
-├── LICENSE
-├── README.md
+verifyProcessAntenna
+📊 Implementation Checks
+
+The final implementation should satisfy the following major requirements:
+
+Check	Objective
+Placement	All standard cells legally placed
+Connectivity	No unintended open connections
+Power	VDD/VSS properly distributed
+CTS	Clock network implemented
+Routing	All signal nets routed
+DRC	No design-rule violations
+Antenna	No antenna violations
+Setup Timing	Timing constraints satisfied
+Hold Timing	Timing constraints satisfied
+GDSII	Final layout database generated
+📁 Repository Structure
+RISC_V_Single_Cycle_Processor/
 │
-├── rtl
+├── README.md
+├── LICENSE
+├── instructions.txt
+│
+├── rtl/
 │   ├── ALU_decoder.v
 │   ├── ALU_Mux.v
 │   ├── ALU.v
@@ -294,7 +376,7 @@ Directory Structure
 │   ├── Single_Cycle_Core.v
 │   └── Single_Cycle_Top.v
 │
-├── tb
+├── tb/
 │   ├── ALU_Decoder_tb.v
 │   ├── ALU_Mux_tb.v
 │   ├── ALU_tb.v
@@ -314,56 +396,191 @@ Directory Structure
 │   ├── Single_Cycle_Core_tb.v
 │   └── Single_Cycle_TB.v
 │
-└── encounter
-    ├── scripts
-    ├── reports
-    ├── outputs
-    └── final_encounter.enc
-Project Results
-The physical design flow generates the following results:
-Synthesized gate-level netlist
-Floorplan
-I/O placement
-Power distribution network
-Standard-cell placement
-Clock tree
-Routed layout
-Timing reports
-DRC reports
-Connectivity reports
-Final Encounter database
-GDSII layout
-Project Summary
-This project combines RISC-V processor design with an ASIC Physical Design flow.
-The RTL implementation demonstrates the architecture and functionality of a 32-bit RISC-V Single Cycle Processor, while the physical design stage demonstrates the transformation of the synthesized design into a physical chip layout using Cadence Encounter.
+├── physical_design/
+│   ├── floorplan/
+│   ├── powerplan/
+│   ├── placement/
+│   ├── cts/
+│   ├── routing/
+│   └── reports/
+│
+└── images/
+    └── final_layout.png
+🛠️ Tools and Technologies
+Hardware Description Language
+Verilog HDL
+RISC-V RV32I ISA
+RTL / Logic Design
+RTL design
+Digital logic design
+Single-cycle datapath
+Processor control unit
+Physical Design
+Cadence Encounter RTL-to-GDSII
+Standard-cell based physical design
+Floorplanning
+Power Planning
+Placement
+Clock Tree Synthesis
+Routing
+Timing Analysis
+Physical Verification
+GDSII generation
+📐 Design Flow
 
-RISC-V RTL
-     │
-     ▼
-Synthesis
-     │
-     ▼
-Cadence Encounter
-     │
-     ├── Floorplan
-     ├── I/O Placement
-     ├── Power Planning
-     ├── Placement
-     ├── CTS
-     ├── Routing
-     └── Verification
-     │
-     ▼
-GDSII
-```
+The complete project flow can be summarized as:
 
-## Reference
+                 RISC-V ISA
+                     │
+                     ▼
+              RTL / Verilog
+                     │
+                     ▼
+             RTL Verification
+                     │
+                     ▼
+                Synthesis
+                     │
+                     ▼
+             Gate-Level Netlist
+                     │
+                     ▼
+              Cadence Encounter
+                     │
+          ┌──────────┴──────────┐
+          ▼                     ▼
+      Floorplan             Constraints
+          │
+          ▼
+     Power Planning
+          │
+          ▼
+       Placement
+          │
+          ▼
+          CTS
+          │
+          ▼
+        Routing
+          │
+          ▼
+   Post-Route Optimization
+          │
+          ▼
+ Physical Verification
+          │
+          ▼
+        GDSII
+🎯 Project Objectives
 
-- Govardhan N., **RISC-V Single Cycle Processor**:  
-  https://github.com/govardhnn/RISCV_Single_Cycle_Processor
-> The RTL implementation was referenced and adapted from the above project. The RTL-to-GDSII physical design flow was independently implemented using Cadence Encounter.
----
-Author
+The main objectives of this project are:
+
+Understand the architecture of a 32-bit RISC-V processor.
+Implement a single-cycle processor using Verilog HDL.
+Understand the datapath and control path of a CPU.
+Verify the RTL design using simulation.
+Understand the transition from RTL to gate-level netlist.
+Perform physical implementation using Cadence Encounter.
+Understand floorplanning and power distribution.
+Perform standard-cell placement.
+Perform Clock Tree Synthesis.
+Perform signal and power routing.
+Analyze post-route timing.
+Perform physical verification.
+Generate the final GDSII layout.
+📌 Current Status
+RTL
+ Processor datapath
+ Control unit
+ ALU
+ Register file
+ Instruction memory
+ Data memory
+ Immediate generation
+ Branch logic
+ RTL verification
+Physical Design
+ Netlist import
+ Floorplan
+ Power planning
+ Placement
+ Clock Tree Synthesis
+ Routing
+ Post-route optimization
+ Physical verification
+ Final layout
+ GDSII generation
+🚧 Future Improvements
+
+Possible future improvements include:
+
+Implement the remaining RV32I instructions.
+Improve processor verification coverage.
+Optimize area utilization.
+Improve timing performance.
+Reduce routing congestion.
+Optimize power distribution.
+Perform more detailed power analysis.
+Perform STA across multiple PVT corners.
+Compare different placement and routing strategies.
+Further optimize the final physical layout.
+📖 Reference
+
+The RTL implementation was developed with reference to the following open-source project:
+
+RISC-V Single Cycle Processor – Govardhan N.
+
+GitHub Repository
+
+The referenced project is itself based on:
+
+Digital Design and Computer Architecture: RISC-V Edition
+Sarah L. Harris and David Harris
+
+The original repository contains an RTL implementation of a 32-bit RISC-V Single-Cycle Processor and is distributed under the MIT License.
+
+Note: The RTL implementation in this project was referenced/adapted from the above work. The physical design flow, including floorplanning, power planning, placement, CTS, routing, verification, and RTL-to-GDSII implementation, was performed as part of this project.
+
+📜 License
+
+This project is provided for educational and research purposes.
+
+If portions of the RTL are derived from the referenced MIT-licensed project, the original copyright and license notices should be retained where applicable.
+
+See LICENSE for the license applicable to this repository.
+
+👤 Author
+
 Lý Vĩnh Khang
-Electronics and Telecommunications Engineering
-Ho Chi Minh City University of Technology and Engineering (HCMUTE)
+
+Electronics & Telecommunications Engineering
+
+Ho Chi Minh City University of Technology and Education (HCMUTE)
+
+⭐ Acknowledgement
+
+Special thanks to the authors of the referenced RISC-V Single-Cycle Processor project and to the authors of:
+
+Digital Design and Computer Architecture: RISC-V Edition
+
+by Sarah L. Harris and David Harris.
+
+📷 Final Layout Preview
+
+
+### Có 2 chỗ m cần làm trước khi push
+
+**1. Đặt ảnh layout**
+
+Tạo thư mục:
+
+```text
+images/
+
+rồi đặt ảnh m gửi vào:
+
+images/final_layout.png
+
+README sẽ tự hiện ảnh bằng:
+
+![Final RISC-V Processor Layout](Layout_Final1.png)
