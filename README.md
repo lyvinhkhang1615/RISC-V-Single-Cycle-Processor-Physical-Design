@@ -51,11 +51,9 @@ BLTU
 BGEU
 JAL
 RTL Design
-
 The processor is implemented using Verilog HDL.
 
 The main RTL modules include:
-
 ALU
 Register File
 Control Unit
@@ -160,9 +158,7 @@ intr_i[*]
 The I/O pins are fixed after placement to prevent unintended movement during later physical-design stages.
 
 3. Power Planning
-
 A Power Distribution Network (PDN) is created to distribute the power and ground nets throughout the processor.
-
 The power network consists of:
 
 Power Ring
