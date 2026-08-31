@@ -1,0 +1,80 @@
+# PPCMD 1 
+# sroute -connect corePin -layerChangeRange {Metal1 Metal9} -nets {VDD VSS} -allowJogging true -allowLayerChange true
+# 4 
+# 16 
+# 0 
+# 0 
+# 0 
+# 0 
+# BOX_LIST 
+# END_BOX_LIST 
+# NET_INFO_LIST 
+# END_NET_INFO_LIST 
+# END_PPCMD 1 
+
+# PPCMD 2 
+# addStripe -nets {VDD VSS} -layer Metal9 -direction horizontal -width 1.25 -spacing 1.5 -set_to_set_distance 30 -stacked_via_top_layer Metal9 -stacked_via_bottom_layer Metal1 -via_using_exact_crossover_size true
+# 3 
+# 2 
+# 1 
+# 0 
+# 0 
+# 2 
+# BOX_LIST 
+# 18000 22020 938000 661040 0 
+# 25000 29020 931000 654040 0 
+# END_BOX_LIST 
+# NET_INFO_LIST 
+# VSS 2500 9 0 35520 650020 60000 0 0 
+# VDD 2500 9 0 30020 650020 60000 0 0 
+# END_NET_INFO_LIST 
+# END_PPCMD 2 
+
+# PPCMD 3 
+# addStripe -nets {VDD VSS} -layer Metal8 -direction vertical -width 1.25 -spacing 1.5 -set_to_set_distance 30 -stacked_via_top_layer Metal9 -stacked_via_bottom_layer Metal1 -via_using_exact_crossover_size true
+# 2 
+# 2 
+# 1 
+# 0 
+# 0 
+# 2 
+# BOX_LIST 
+# 18000 18020 938000 657040 0 
+# 25000 25020 931000 650040 0 
+# END_BOX_LIST 
+# NET_INFO_LIST 
+# VSS 2500 8 0 35500 930000 60000 0 0 
+# VDD 2500 8 0 30000 930000 60000 0 0 
+# END_NET_INFO_LIST 
+# END_PPCMD 3 
+
+# PPCMD 4 
+# addRing -nets {VDD VSS} -type core_rings -follow core -layer {top Metal8 bottom Metal8 left Metal9 right Metal9} -width 2 -spacing 1.5 -offset 0.5 -stacked_via_top_layer Metal9 -stacked_via_bottom_layer Metal1 -via_using_exact_crossover_size true -layer_top Metal8 -layer_bottom Metal8 -layer_left Metal9 -layer_right Metal9 -width_top {2} -width_bottom {2} -width_left {2} -width_right {2} -spacing_top {1.5} -spacing_bottom {1.5} -spacing_left {1.5} -spacing_right {1.5} -offset_top {0.5} -offset_bottom {0.5} -offset_left {0.5} -offset_right {0.5}
+# 1 
+# 32 
+# 1 
+# 0 
+# 0 
+# 0 
+# BOX_LIST 
+# END_BOX_LIST 
+# NET_INFO_LIST 
+# VSS 4000 8 1 0 0 0 0 0 
+# RING_PT_INFO_LIST 
+# 480000 20020 480000 659040 
+# END_RING_PT_INFO_LIST 
+# VSS 4000 9 1 0 0 0 0 0 
+# RING_PT_INFO_LIST 
+# 20000 339530 940000 339530 
+# END_RING_PT_INFO_LIST 
+# VDD 4000 8 1 0 0 0 0 0 
+# RING_PT_INFO_LIST 
+# 480000 27020 480000 652040 
+# END_RING_PT_INFO_LIST 
+# VDD 4000 9 1 0 0 0 0 0 
+# RING_PT_INFO_LIST 
+# 27000 339530 933000 339530 
+# END_RING_PT_INFO_LIST 
+# END_NET_INFO_LIST 
+# END_PPCMD 4 
+
