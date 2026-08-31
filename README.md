@@ -355,9 +355,7 @@ Cadence Encounter
      │
      ▼
 GDSII
-
----
-
+```
 ## Acknowledgements
 The RTL implementation of the RISC-V Single-Cycle Processor was referenced and adapted from:
 **RISC-V Single Cycle Processor by Govardhan (govardhnn)**  
