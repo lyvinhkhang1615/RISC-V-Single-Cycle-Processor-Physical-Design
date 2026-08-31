@@ -66,7 +66,6 @@ Core Datapath
 ASIC Physical Design
 
 After RTL development and synthesis, the design is taken through an ASIC physical design flow using Cadence Encounter.
-
 The physical design flow consists of:
 
 RTL
@@ -107,11 +106,9 @@ Physical Verification
  ▼
 GDSII
 Physical Design Tool
-
 Cadence Encounter 13.10
 
 The following stages are performed in Encounter:
-
 Design Import
 Floorplanning
 I/O Pin Placement
@@ -123,27 +120,21 @@ Post-Route Optimization
 Physical Verification
 Timing Analysis
 GDSII Generation
+
 1. Floorplanning
-
 The synthesized netlist is imported into Cadence Encounter and the initial floorplan is created.
-
 The floorplanning stage includes:
-
 Die/core definition
 Core utilization
 Aspect ratio
 Placement boundaries
 Macro placement
 Routing considerations
-
 The floorplan provides the physical area in which the processor cells are placed.
 
 2. I/O Pin Placement
-
 The processor input and output ports are placed around the core boundary.
-
 Different metal layers can be assigned to different groups of ports according to the routing requirements.
-
 Example ports include:
 
 clk_i
@@ -160,7 +151,6 @@ The I/O pins are fixed after placement to prevent unintended movement during lat
 3. Power Planning
 A Power Distribution Network (PDN) is created to distribute the power and ground nets throughout the processor.
 The power network consists of:
-
 Power Ring
      │
      ▼
@@ -170,108 +160,76 @@ Power Straps
 Standard Cell Power Rails
 
 Multiple metal layers are used for power distribution.
-
 Power Mesh
-
 The power mesh uses the following metal layers:
-
 Mesh	Horizontal Layer	Vertical Layer
 MESH1	M9	M8
 MESH2	M7	M6
 MESH3	M5	M4
 MESH4	M3	M2
 Standard Cell Rail	M1	-
-
 The higher metal layers are used for the global power network, while M1 provides power connections to standard cells.
 
 4. Standard Cell Placement
-
 After power planning, standard cells are placed inside the core area.
-
 The placement stage aims to achieve:
-
 Legal cell placement
 Low routing congestion
 Good timing
 Efficient area utilization
 Reduced interconnect length
-
 Placement is verified before proceeding to CTS.
 
 5. Clock Tree Synthesis
-
 Clock Tree Synthesis (CTS) is performed to distribute the clock signal to sequential elements.
-
 The main objectives are:
-
 Reduce clock skew
 Control clock latency
 Improve clock transition
 Satisfy setup timing
 Satisfy hold timing
-
 The clock network is built before final signal routing.
 
 6. Routing
-
 After placement and CTS, signal routing is performed.
-
 The routing stage connects the standard cells, macros, clock network, and I/O pins.
-
 Typical Encounter commands include:
-
 routeDesign
-
 and post-route ECO routing:
-
 ecoRoute
 7. Post-Route Optimization
-
 Post-route optimization is performed after routing to improve the final timing and resolve remaining violations.
-
 Typical optimization targets include:
-
 Setup violations
 Hold violations
 Transition violations
 Capacitance violations
 Routing-related violations
-
 Example:
-
 optDesign -postRoute
+
 8. Physical Verification
-
 Several physical verification checks are performed after routing.
-
-Connectivity
+Connectivity:
 verifyConnectivity -type all
-
 Checks the physical connectivity of the design.
 
-Geometry
+Geometry:
 verifyGeometry -report ./reports/final_drc.rpt
-
 Checks physical geometry violations.
 
-DRC
+DRC:
 verify_drc
-
 Checks design-rule violations.
 
-Antenna
+Antenna:
 verifyProcessAntenna
-
 Checks process antenna violations.
 
 9. Timing Analysis
-
 Post-route timing analysis is performed to evaluate the timing performance of the processor.
-
 timeDesign -postRoute
-
 The main timing parameters include:
-
 Setup Slack
 Hold Slack
 Worst Negative Slack (WNS)
@@ -279,13 +237,10 @@ Total Negative Slack (TNS)
 Clock Skew
 Data Arrival Time
 Required Arrival Time
-
 Both setup and hold timing are checked before final sign-off.
 
 10. Final Design Verification
-
 Before generating the final layout, the following checks are performed:
-
 Placement
    │
    ├── Legal Placement
@@ -304,21 +259,14 @@ Timing
    │
    ▼
 Final Database
-
 The design is considered ready for final output after the physical and timing checks are completed successfully.
 
 11. GDSII Generation
-
 The final Encounter database is saved and the physical layout is exported to GDSII.
-
 Example:
-
 saveDesign ./final_encounter.enc
-
 streamOut ./top_module.gds
-
 Final outputs include:
-
 final_encounter.enc
 top_module.gds
 Directory Structure
@@ -371,9 +319,7 @@ Directory Structure
     ├── outputs
     └── final_encounter.enc
 Project Results
-
 The physical design flow generates the following results:
-
 Synthesized gate-level netlist
 Floorplan
 I/O placement
@@ -387,9 +333,7 @@ Connectivity reports
 Final Encounter database
 GDSII layout
 Project Summary
-
 This project combines RISC-V processor design with an ASIC Physical Design flow.
-
 The RTL implementation demonstrates the architecture and functionality of a 32-bit RISC-V Single Cycle Processor, while the physical design stage demonstrates the transformation of the synthesized design into a physical chip layout using Cadence Encounter.
 
 RISC-V RTL
