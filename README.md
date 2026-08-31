@@ -1,5 +1,4 @@
 # RISC-V-Single-Cycle-Processor-Physical-Design
-# RISC_V_Single_Cycle_Processor
 
 My implementation of a **32-bit RISC-V Single Cycle Processor**, followed by an **ASIC Physical Design flow using Cadence Encounter**.
 
