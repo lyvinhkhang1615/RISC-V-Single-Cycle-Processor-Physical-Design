@@ -1,7 +1,13 @@
 # RISC_V_Single_Cycle_Processor
-
+# RISC-V Single-Cycle RTL-to-GDSII
+A 32-bit RISC-V Single-Cycle Processor implemented using
+Verilog HDL and completed through an ASIC RTL-to-GDSII flow.
+## Tools
+- Verilog HDL
+- Cadence RTL compiler
+- Cadence Encounter
+- GPDK045
 My implementation of a **32-bit RISC-V Single Cycle Processor**, followed by an **ASIC Physical Design flow using Cadence Encounter**.
-
 The project covers both the RTL implementation of the processor and the physical implementation from synthesized netlist to final GDSII.
 
 ---
